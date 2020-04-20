@@ -1,24 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Axios from 'axios';
+import Search from './components/Search';
+import Results from './components/Results';
+import Popup from './components/Popup';
 
-function App() {
+const App = () => {
+
+  const [state, setState] = useState({
+    s: "",
+    results: [],
+    selected: {}
+  });
+
+  const API_key = "http://www.omdbapi.com/?apikey=cbc5e34c";
+
+  const search = async (e) => {
+    if (e.key === "Enter") {
+      const res = await Axios.get(`${API_key}&s=${state.s}`);
+      console.log(res.data.Search);
+
+      setState(prevState => {
+        return { ...prevState, results: res.data.Search }
+      })
+    }
+  }
+
+  const openPopup = async (id) => {
+    const { data } = await Axios.get(`${API_key}&i=${id}`);
+    console.log(data);
+    setState(prevState => {
+      return { ...prevState, selected: data }
+    });
+  }
+
+  const closePopup = async () => {
+    setState(prevState => {
+      return { ...prevState, selected: {} }
+    });
+  }
+
+  const handleInput = (e) => {
+    let s = e.target.value;
+
+    setState(prevState => {
+      return { ...prevState, s: s }
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>Movie Datebase</h1>
       </header>
+      <main>
+        <Search handleInput={handleInput} search={search} />
+
+        <Results results={state.results} openPopup={openPopup} />
+
+        {(typeof state.selected.Title != "undefined" ? <Popup selected={state.selected} closePopup={closePopup} /> : false)}
+      </main>
     </div>
   );
 }
