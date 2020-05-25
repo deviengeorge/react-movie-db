@@ -30,6 +30,7 @@ section {
   padding: 15px;
 }
 
+/* ===================================================== */
 
 .searchbox {
   display: block;
@@ -52,18 +53,15 @@ section {
   box-shadow: 0px 0px 8px 3px #4484C4;
 }
 
+/* ===================================================== */
+
 .results {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0px -15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 10px;
 }
 
 .results .result {
-  width: calc(100% / 3);
-  min-width: 250px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
 }
 
@@ -88,6 +86,8 @@ section {
   color: #223343;
 }
 
+/* ===================================================== */
+
 .popup {
   position: fixed;
   top: 0;
@@ -99,7 +99,7 @@ section {
 }
 
 .popup .content {
-  display: block;
+  display: grid;
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
@@ -156,3 +156,5 @@ section {
 .popup .content .close:hover {
   background-color: #223343;
 }
+
+/* ===================================================== */
